@@ -11,7 +11,7 @@ import akka.http.scaladsl.server.Route
 import akka.pattern.ask
 import akka.util.Timeout
 
-import io.moia.service.shortner.UrlShortner
+import io.moia.service.shortener.UrlShortner
 import io.moia.web.service.marshalling._
 import io.moia.web.service.util.ParsingDirectives._
 

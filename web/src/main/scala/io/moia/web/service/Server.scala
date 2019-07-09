@@ -10,7 +10,7 @@ import akka.stream.ActorMaterializer
 import akka.util.Timeout
 
 import io.moia.core.config.UrlShortenerConfig
-import io.moia.service.shortner.UrlShortner
+import io.moia.service.shortener.UrlShortner
 
 object Server extends App {
 

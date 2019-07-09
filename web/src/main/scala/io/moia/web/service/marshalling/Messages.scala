@@ -3,7 +3,7 @@ package service.marshalling
 
 import io.moia.core.config.UrlShortenerConfig
 import io.moia.core.util.UrlShortenerUtil
-import io.moia.service.shortner.UrlShortner.ShortenUrlResponse
+import io.moia.service.shortener.UrlShortner.ShortenUrlResponse
 import io.moia.web.service.util.ParsingDirectives._
 
 

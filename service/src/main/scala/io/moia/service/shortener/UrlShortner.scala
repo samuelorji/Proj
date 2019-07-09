@@ -1,4 +1,4 @@
-package io.moia.service.shortner
+package io.moia.service.shortener
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success}
@@ -28,7 +28,7 @@ object UrlShortner extends InstanceManager[ActorRef]{
   }
 }
 class UrlShortner extends Actor
-  with LogicT
+  with StringManipulatorT
   with JsonHelper
   with ActorLogging {
 
@@ -66,7 +66,7 @@ class UrlShortner extends Actor
               //user added http protocol to request
               Some(req.shortUrl.split("//")(1).split("/")(1))
             case false =>
-              //user probably just entered the link without the http protocol
+              //user entered the link without the http protocol
               Some(req.shortUrl.split("/")(1))
           }
         }catch {
