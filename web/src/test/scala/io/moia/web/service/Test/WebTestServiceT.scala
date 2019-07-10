@@ -1,11 +1,11 @@
-package io.moia.core
+package io.moia.web.service.Test
 
 import akka.actor.ActorSystem
 import akka.testkit.{ImplicitSender, TestKit}
 
 import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
 
-abstract class TestServiceT extends TestKit(ActorSystem("Core"))
+abstract class WebTestServiceT extends TestKit(ActorSystem("Web"))
   with ImplicitSender
   with Matchers
   with WordSpecLike

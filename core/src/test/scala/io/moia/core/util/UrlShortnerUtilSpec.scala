@@ -2,9 +2,9 @@ package io.moia.core.util
 
 import java.net.URL
 
-import io.moia.core.TestServiceT
+import io.moia.core.CoreTestServiceT
 
-class UrlShortnerUtilSpec extends TestServiceT {
+class UrlShortnerUtilSpec extends CoreTestServiceT {
   "The UrlShortnerUtil" must {
     "properly parse a valid url" in {
       UrlShortenerUtil.parseUrl("https://moia.io")

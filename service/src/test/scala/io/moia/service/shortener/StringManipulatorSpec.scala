@@ -1,8 +1,8 @@
 package io.moia.service.shortener
 
-import io.moia.service.TestServiceT
+import io.moia.service.ServiceTestServiceT
 
-class StringManipulatorSpec extends TestServiceT {
+class StringManipulatorSpec extends ServiceTestServiceT {
   object test extends StringManipulatorT
   "The String manipulator " must {
     "return 8 unique character " in {

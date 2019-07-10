@@ -2,9 +2,9 @@ package io.moia.core.config
 
 import scala.concurrent.duration.FiniteDuration
 
-import io.moia.core.TestServiceT
+import io.moia.core.CoreTestServiceT
 
-class ConfigSpec extends TestServiceT{
+class ConfigSpec extends CoreTestServiceT{
 
   "The UrlShortnerConfig" must {
     "parse values correctly" in {

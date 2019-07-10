@@ -20,12 +20,12 @@ trait WebServiceT extends JsonHelper {
 
   implicit val timeout :Timeout
 
-  implicit def actorRefFactory: ActorSystem
+  implicit def actorSystem: ActorSystem
 
   private lazy val shortener    = createShortenerActor
-  def createShortenerActor =  actorRefFactory.actorOf(UrlShortener.props,"UrlShortener")
+  def createShortenerActor      =  actorSystem.actorOf(UrlShortener.props,"UrlShortener")
 
-  lazy val routes : Route = {
+  lazy val routes = {
     path("api" / "shorten"){
       post{
         formFieldMap { fields =>

@@ -21,7 +21,7 @@ object Server extends App {
 
   val bdgFut = Http().bindAndHandle(
     new WebServiceT {
-      override val actorRefFactory: ActorSystem = system
+      override implicit val actorSystem: ActorSystem = system
       override implicit val timeout: Timeout = UrlShortenerConfig.httpRequestsTimeout
     }.routes,
     UrlShortenerConfig.webHost, UrlShortenerConfig.webPort)

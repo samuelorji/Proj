@@ -12,11 +12,12 @@ import spray.json._
 import io.moia.service.shortener.UrlShortener._
 
 
-class UrlShortenerSpec extends TestServiceT with JsonHelper {
+class UrlShortenerSpec extends ServiceTestServiceT with JsonHelper {
 
   val redisProbe    = TestProbe()
   val mockUniqueUrl = "moiagood"
   val actualUrl     = "https://moia.io"
+  val invalidPrefix = "moia.li/"
   val urlRedisData  = UrlRedisData(
     shortUrl  = mockUniqueUrl,
     actualUrl = actualUrl
@@ -32,7 +33,7 @@ class UrlShortenerSpec extends TestServiceT with JsonHelper {
       val shortenUrlRequest = ShortenUrlRequest(url = actualUrl)
 
       urlShortener ! shortenUrlRequest
-      redisProbe.expectMsg(AddElementRequest(mockUniqueUrl,urlRedisData.toJson.prettyPrint))
+      redisProbe.expectMsg(AddElementRequest(mockUniqueUrl, urlRedisData.toJson.prettyPrint))
       redisProbe.reply(AddElementResult(true))
 
       expectMsg(ShortenUrlResponse(mockUniqueUrl))
@@ -46,7 +47,7 @@ class UrlShortenerSpec extends TestServiceT with JsonHelper {
 
       urlShortener ! shortenUrlRequest
 
-      redisProbe.expectMsg(AddElementRequest(mockUniqueUrl,urlRedisData.toJson.prettyPrint))
+      redisProbe.expectMsg(AddElementRequest(mockUniqueUrl, urlRedisData.toJson.prettyPrint))
       redisProbe.reply(AddElementResult(false))
 
       val redisResponse = expectMsgType[ShortenUrlResponse]
@@ -60,7 +61,7 @@ class UrlShortenerSpec extends TestServiceT with JsonHelper {
 
     "Properly parse a valid RedirectUrl Request without Http protocol " in {
       urlShortener ! RedirectUrlRequest(
-        shortUrl =  "moia.ly/" + mockUniqueUrl
+        shortUrl = "moia.ly/" + mockUniqueUrl
       )
 
       redisProbe.expectMsg(FetchElementRequest(
@@ -77,48 +78,79 @@ class UrlShortenerSpec extends TestServiceT with JsonHelper {
       expectNoMessage(100 millis)
       redisProbe.expectNoMessage(100 millis)
     }
-  }
 
-  "Properly parse a valid RedirectUrl Request with Http protocol " in {
-    urlShortener ! RedirectUrlRequest(
-      shortUrl =  "https://moia.ly/" + mockUniqueUrl
-    )
 
-    redisProbe.expectMsg(FetchElementRequest(
-      key = mockUniqueUrl
-    ))
-    redisProbe.reply(FetchElementResult(
-      result = Some(urlRedisData.toJson.prettyPrint)
-    ))
+    "Properly parse a valid RedirectUrl Request with Http protocol " in {
+      urlShortener ! RedirectUrlRequest(
+        shortUrl = "https://moia.ly/" + mockUniqueUrl
+      )
 
-    expectMsg(RedirectUrlResponse(
-      actualUrl = actualUrl
-    ))
+      redisProbe.expectMsg(FetchElementRequest(
+        key = mockUniqueUrl
+      ))
+      redisProbe.reply(FetchElementResult(
+        result = Some(urlRedisData.toJson.prettyPrint)
+      ))
 
-    expectNoMessage(100 millis)
-    redisProbe.expectNoMessage(100 millis)
-  }
+      expectMsg(RedirectUrlResponse(
+        actualUrl = actualUrl
+      ))
 
-  "Return an empty string with an error when unable to fetch from Redis " in {
-    urlShortener ! RedirectUrlRequest(
-      shortUrl =  "https://moia.ly/" + mockUniqueUrl
-    )
+      expectNoMessage(100 millis)
+      redisProbe.expectNoMessage(100 millis)
+    }
 
-    redisProbe.expectMsg(FetchElementRequest(
-      key = mockUniqueUrl
-    ))
-    redisProbe.reply(FetchElementResult(
-      result = None
-    ))
+    "Return an empty string with an error when unable to fetch from Redis " in {
+      urlShortener ! RedirectUrlRequest(
+        shortUrl = "https://moia.ly/" + mockUniqueUrl
+      )
 
-    val msg = expectMsgType[RedirectUrlResponse]
+      redisProbe.expectMsg(FetchElementRequest(
+        key = mockUniqueUrl
+      ))
+      redisProbe.reply(FetchElementResult(
+        result = None
+      ))
 
-    msg.actualUrl shouldBe("")
-    msg.exception should not be None
+      val msg = expectMsgType[RedirectUrlResponse]
 
-    expectNoMessage(100 millis)
-    redisProbe.expectNoMessage(100 millis)
+      msg.actualUrl shouldBe ("")
+      msg.exception should not be None
 
+      expectNoMessage(100 millis)
+      redisProbe.expectNoMessage(100 millis)
+
+    }
+    "Return an error when the Url with right http protocol doesn't contain the right required Prefix " in {
+      urlShortener ! RedirectUrlRequest(
+        shortUrl = "https://" + invalidPrefix + mockUniqueUrl
+      )
+
+      val msg = expectMsgType[RedirectUrlResponse]
+
+      msg.actualUrl shouldBe ("")
+      msg.exception should not be None
+      msg.exception.get.getMessage shouldBe ("Invalid Shortened Url")
+
+      expectNoMessage(100 millis)
+      redisProbe.expectNoMessage(100 millis)
+
+    }
+    "Return an error when the Url without an http protocol doesn't contain the right required Prefix " in {
+      urlShortener ! RedirectUrlRequest(
+        shortUrl = invalidPrefix + mockUniqueUrl
+      )
+
+      val msg = expectMsgType[RedirectUrlResponse]
+
+      msg.actualUrl shouldBe ("")
+      msg.exception should not be None
+      msg.exception.get.getMessage shouldBe ("Invalid Shortened Url")
+
+      expectNoMessage(100 millis)
+      redisProbe.expectNoMessage(100 millis)
+
+    }
   }
 }
 

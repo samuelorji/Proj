@@ -64,17 +64,29 @@ class UrlShortener extends Actor
       val currentSender = sender()
       val shortUrl      =
         try {
+          val exactPrefix = UrlShortenerConfig.shortenedUrlPrefix.substring(0,UrlShortenerConfig.shortenedUrlPrefix.length-1)
           req.shortUrl.startsWith("http") match {
             case true =>
               //user added http protocol to request
-              Some(req.shortUrl.split("//")(1).split("/")(1))
+              val entries = req.shortUrl.split("//")(1)
+              //first entry should be http(s)://moia.ly/
+              entries.split("/")(0) == exactPrefix match {
+                  case true  => Some(entries.split("/")(1))
+                  case false => None
+                }
+
             case false =>
               //user entered the link without the http protocol
-              Some(req.shortUrl.split("/")(1))
+             val entries = req.shortUrl.split("/")
+              entries(0) == exactPrefix match {
+                case true  => Some(entries(1))
+                case false => None
+              }
           }
         }catch {
           case _: ArrayIndexOutOfBoundsException => None
         }
+
       shortUrl match {
         case Some(sUrl) =>
           (redisDbService ? FetchElementRequest(sUrl)).mapTo[FetchElementResult] onComplete{

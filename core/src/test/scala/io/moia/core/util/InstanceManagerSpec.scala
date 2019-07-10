@@ -1,8 +1,8 @@
 package io.moia.core.util
 
-import io.moia.core.TestServiceT
+import io.moia.core.CoreTestServiceT
 
-class InstanceManagerSpec extends TestServiceT {
+class InstanceManagerSpec extends CoreTestServiceT {
 
   object test extends InstanceManager[Int]{
     def init = {
