@@ -11,7 +11,7 @@ import akka.http.scaladsl.server.Route
 import akka.pattern.ask
 import akka.util.Timeout
 
-import io.moia.service.shortener.UrlShortner
+import io.moia.service.shortener.UrlShortener
 import io.moia.web.service.marshalling._
 import io.moia.web.service.util.ParsingDirectives._
 
@@ -23,7 +23,7 @@ trait WebServiceT extends JsonHelper {
   implicit def actorRefFactory: ActorSystem
 
   private lazy val shortener    = createShortenerActor
-  def createShortenerActor =  actorRefFactory.actorOf(Props[UrlShortner])
+  def createShortenerActor =  actorRefFactory.actorOf(UrlShortener.props,"UrlShortener")
 
   lazy val routes : Route = {
     path("api" / "shorten"){
@@ -33,7 +33,7 @@ trait WebServiceT extends JsonHelper {
             logRequestResult("api:shorten", Logging.InfoLevel) {
               val shortenUrlRequest = element.asInstanceOf[UrlToShortenRequest]
               complete {
-                (shortener ? UrlShortner.ShortenUrlRequest(shortenUrlRequest.url)).mapTo[UrlShortner.ShortenUrlResponse].map { x =>
+                (shortener ? UrlShortener.ShortenUrlRequest(shortenUrlRequest.url)).mapTo[UrlShortener.ShortenUrlResponse].map { x =>
                   ShortenerService.fromUrlToShorten(x) match {
                     case resp@UrlToShortenResponse(_, Some(_)) => StatusCodes.InternalServerError -> resp
                     case resp@UrlToShortenResponse(_, None)    => StatusCodes.Created             -> resp
@@ -51,8 +51,8 @@ trait WebServiceT extends JsonHelper {
           formDataElement(ShortenedUrlRequest,fields){ element =>
             val shortenedUrlRequest = element.asInstanceOf[ShortenedUrlRequest]
             onComplete(
-              (shortener ? UrlShortner.RedirectUrlRequest(shortenedUrlRequest.url))
-                .mapTo[UrlShortner.RedirectUrlResponse]
+              (shortener ? UrlShortener.RedirectUrlRequest(shortenedUrlRequest.url))
+                .mapTo[UrlShortener.RedirectUrlResponse]
             ){
               case Success(res) =>
                 res.exception match {

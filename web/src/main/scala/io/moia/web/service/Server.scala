@@ -10,14 +10,14 @@ import akka.stream.ActorMaterializer
 import akka.util.Timeout
 
 import io.moia.core.config.UrlShortenerConfig
-import io.moia.service.shortener.UrlShortner
+import io.moia.service.shortener.UrlShortener
 
 object Server extends App {
 
   implicit val system       = ActorSystem("UrlShortener")
   implicit val materializer = ActorMaterializer()
 
-  UrlShortner.initializeRedis
+  UrlShortener.initializeRedis
 
   val bdgFut = Http().bindAndHandle(
     new WebServiceT {

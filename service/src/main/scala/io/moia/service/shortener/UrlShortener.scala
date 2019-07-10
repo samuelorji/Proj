@@ -3,7 +3,7 @@ package io.moia.service.shortener
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success}
 
-import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem}
+import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
 import akka.pattern.ask
 import akka.util.Timeout
 
@@ -14,7 +14,9 @@ import io.moia.core.util.InstanceManager
 import io.moia.service.marshalling.JsonHelper
 import spray.json._
 
-object UrlShortner extends InstanceManager[ActorRef]{
+object UrlShortener extends InstanceManager[ActorRef]{
+
+
   case class ShortenUrlRequest(url : String)
   case class ShortenUrlResponse(url : String,exception: Option[Throwable] = None)
 
@@ -26,16 +28,17 @@ object UrlShortner extends InstanceManager[ActorRef]{
   def initializeRedis(implicit context : ActorSystem) = {
     setInstance(MoiaRedisDbService.getRedisInstance)
   }
+  def props : Props = Props[UrlShortener]
 }
-class UrlShortner extends Actor
+class UrlShortener extends Actor
   with StringManipulatorT
   with JsonHelper
   with ActorLogging {
 
-  import UrlShortner._
+  import UrlShortener._
 
   private val redisDbService = createRedisDbService
-  def createRedisDbService   = UrlShortner.getInstance
+  def createRedisDbService   = UrlShortener.getInstance
 
   private implicit val timeout : Timeout = UrlShortenerConfig.moiaRedisTimeout
   override def receive: Receive = {

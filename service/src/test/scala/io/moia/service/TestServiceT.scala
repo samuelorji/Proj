@@ -1,4 +1,4 @@
-package io.moia.service.util
+package io.moia.service
 
 import akka.actor.ActorSystem
 import akka.testkit.{ImplicitSender, TestKit}
