@@ -1,31 +1,34 @@
 package com.lunatech.imdb.web
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.io.StdIn
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 import akka.util.Timeout
-import com.lunatech.imdb.core.config.UrlShortenerConfig
-import com.lunatech.imdb.service.shortener.UrlShortener
+import com.lunatech.imdb.core.config.ImdbConfig
+
+import scala.concurrent.duration.FiniteDuration
+import scala.io.StdIn
 
 object Server extends App {
 
-  implicit val system       = ActorSystem("UrlShortener")
+  implicit val system       = ActorSystem("Imdb")
   implicit val materializer = ActorMaterializer()
 
-  UrlShortener.initializeRedis
 
   val bdgFut = Http().bindAndHandle(
     new WebServiceT {
       override implicit val actorSystem: ActorSystem = system
-      override implicit val timeout: Timeout = UrlShortenerConfig.httpRequestsTimeout
+      override implicit val timeout: Timeout = Timeout(FiniteDuration(10,"seconds"))
     }.routes,
-    UrlShortenerConfig.webHost, UrlShortenerConfig.webPort)
+    ImdbConfig.webHost, ImdbConfig.webPort)
 
   StdIn.readLine()
   bdgFut
     .flatMap(_.unbind())
     .onComplete(_ => system.terminate()) // and shutdown when done
+
+
+
 
 }

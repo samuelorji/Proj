@@ -7,7 +7,7 @@
 		revision="0.1.0-SNAPSHOT"
 		conf="test"
 		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, pom, scala-tool"
-		date="20190729135056"/>
+		date="20190729153631"/>
 	<dependencies>
 		<module organisation="com.typesafe.akka" name="akka-http-testkit_2.12">
 			<revision name="10.1.7" status="release" pubdate="20190104111026" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://akka.io" extra-info.apiURL="http://doc.akka.io/api/akka-http/10.1.7/" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="36">
@@ -35,7 +35,7 @@
 			</revision>
 		</module>
 		<module organisation="service" name="service_2.12">
-			<revision name="0.1.0-SNAPSHOT" status="integration" pubdate="20190729135055" resolver="inter-project" artresolver="inter-project" downloaded="false" searched="false" default="false" conf="compile, default(compile)" position="30">
+			<revision name="0.1.0-SNAPSHOT" status="integration" pubdate="20190729153630" resolver="inter-project" artresolver="inter-project" downloaded="false" searched="false" default="false" conf="compile, default(compile)" position="30">
 				<metadata-artifact status="failed" details="" size="0" time="0" searched="false"/>
 				<caller organisation="web" name="web_2.12" conf="test, compile, runtime" rev="0.1.0-SNAPSHOT" rev-constraint-default="0.1.0-SNAPSHOT" rev-constraint-dynamic="0.1.0-SNAPSHOT" callerrev="0.1.0-SNAPSHOT"/>
 				<artifacts>
@@ -43,7 +43,7 @@
 			</revision>
 		</module>
 		<module organisation="core" name="core_2.12">
-			<revision name="0.1.0-SNAPSHOT" status="integration" pubdate="20190729135046" resolver="inter-project" artresolver="inter-project" downloaded="false" searched="false" default="false" conf="compile, default(compile)" position="1">
+			<revision name="0.1.0-SNAPSHOT" status="integration" pubdate="20190729153630" resolver="inter-project" artresolver="inter-project" downloaded="false" searched="false" default="false" conf="compile, default(compile)" position="1">
 				<metadata-artifact status="failed" details="" size="0" time="0" searched="false"/>
 				<caller organisation="web" name="web_2.12" conf="test, compile, runtime" rev="0.1.0-SNAPSHOT" rev-constraint-default="0.1.0-SNAPSHOT" rev-constraint-dynamic="0.1.0-SNAPSHOT" callerrev="0.1.0-SNAPSHOT"/>
 				<caller organisation="service" name="service_2.12" conf="compile" rev="0.1.0-SNAPSHOT" rev-constraint-default="0.1.0-SNAPSHOT" rev-constraint-dynamic="0.1.0-SNAPSHOT" callerrev="0.1.0-SNAPSHOT"/>

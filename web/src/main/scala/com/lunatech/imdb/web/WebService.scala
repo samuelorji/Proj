@@ -1,69 +1,43 @@
 package com.lunatech.imdb.web
 
 import scala.concurrent.ExecutionContext.Implicits.global
-import scala.util.{Failure, Success}
 import akka.actor.{ActorSystem, Props}
-import akka.event.Logging
-import akka.http.scaladsl.model._
+import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives._
-import akka.http.scaladsl.server.Route
 import akka.pattern.ask
 import akka.util.Timeout
-import com.lunatech.imdb.service.shortener.UrlShortener
-import com.lunatech.imdb.web.marshalling.{JsonHelper, ShortenedUrlRequest, ShortenerService, UrlToShortenRequest, UrlToShortenResponse}
-import io.moia.web.service.marshalling._
-import com.lunatech.imdb.web.util.ParsingDirectives._
+import com.lunatech.imdb.service.marshalling.JsonHelper
+import com.lunatech.imdb.service.resolvers.QueryResolver
+
+import scala.util.{Failure, Success}
 
 
 trait WebServiceT extends JsonHelper {
 
-  implicit val timeout :Timeout
+  implicit val timeout: Timeout
 
-  implicit def actorSystem: ActorSystem
+  implicit val actorSystem: ActorSystem
 
-  private lazy val shortener    = createShortenerActor
-  def createShortenerActor      =  actorSystem.actorOf(UrlShortener.props,"UrlShortener")
+  private lazy val queryResolver = createQueryResolver
+
+  def createQueryResolver = actorSystem.actorOf(Props[QueryResolver])
 
   lazy val routes = {
-    path("api" / "shorten"){
-      post{
-        formFieldMap { fields =>
-          formDataElement(UrlToShortenRequest, fields) { element =>
-            logRequestResult("api:shorten", Logging.InfoLevel) {
-              val shortenUrlRequest = element.asInstanceOf[UrlToShortenRequest]
-              complete {
-                (shortener ? UrlShortener.ShortenUrlRequest(shortenUrlRequest.url)).mapTo[UrlShortener.ShortenUrlResponse].map { x =>
-                  ShortenerService.fromUrlToShorten(x) match {
-                    case resp@UrlToShortenResponse(_, Some(_)) => StatusCodes.InternalServerError -> resp
-                    case resp@UrlToShortenResponse(_, None)    => StatusCodes.Created             -> resp
-                  }
-                }
-              }
-            }
-          }
+    path("api" / "typecasted") {
+      get {
+        parameter('name) { name =>
+          //  (queryResolver ? QueryResolver.CheckIfTypeCasted(name))
+          complete("Hello")
+
         }
       }
     } ~
-    path("api" / "redirect"){
-      post{
-        formFieldMap{ fields =>
-          formDataElement(ShortenedUrlRequest,fields){ element =>
-            val shortenedUrlRequest = element.asInstanceOf[ShortenedUrlRequest]
-            onComplete(
-              (shortener ? UrlShortener.RedirectUrlRequest(shortenedUrlRequest.url))
-                .mapTo[UrlShortener.RedirectUrlResponse]
-            ){
-              case Success(res) =>
-                res.exception match {
-                  case Some(ex)  => complete(StatusCodes.NotFound,s"${ex.getMessage}")
-                  case None      => redirect(Uri(res.actualUrl),StatusCodes.Found)
-                }
-              case Failure(_)  => complete(StatusCodes.InternalServerError)
-            }
+      path("api" / "coincidence") {
+        get {
+          (parameter('name1) & parameter('name2)) { (name1, name2) =>
+            complete(StatusCodes.OK, (queryResolver ? QueryResolver.GetCoincidenceRequest(name1, name2)).mapTo[QueryResolver.GetCoincidenceResponse])
           }
-
         }
       }
-    }
   }
 }

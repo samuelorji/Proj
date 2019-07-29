@@ -7,7 +7,7 @@
 		revision="0.1.0-SNAPSHOT"
 		conf="test-internal"
 		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, pom, scala-tool"
-		date="20190729135046"/>
+		date="20190729153630"/>
 	<dependencies>
 		<module organisation="org.scala-lang" name="scala-reflect">
 			<revision name="2.12.7" status="release" pubdate="20180927043203" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.12.7/" downloaded="false" searched="false" default="false" conf="compile, runtime(*), master(compile), runtime, compile(*), master" position="32">
@@ -23,12 +23,12 @@
 			</revision>
 		</module>
 		<module organisation="com.github.mauricio" name="postgresql-async_2.12">
-			<revision name="0.2.21" status="release" pubdate="20170109182827" resolver="public" artresolver="public" homepage="https://github.com/mauricio/postgresql-async" downloaded="true" searched="true" default="false" conf="default, compile, runtime, default(compile), master" position="21">
+			<revision name="0.2.21" status="release" pubdate="20170109182827" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/mauricio/postgresql-async" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="21">
 				<license name="APACHE-2.0" url="http://www.apache.org/licenses/LICENSE-2.0"/>
-				<metadata-artifact status="successful" details="" size="2084" time="1506" location="/Users/samuel/.ivy2/cache/com.github.mauricio/postgresql-async_2.12/ivy-0.2.21.xml" searched="true" original-local-location="/Users/samuel/.ivy2/cache/com.github.mauricio/postgresql-async_2.12/ivy-0.2.21.xml.original" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/github/mauricio/postgresql-async_2.12/0.2.21/postgresql-async_2.12-0.2.21.pom"/>
+				<metadata-artifact status="no" details="" size="3094" time="0" location="/Users/samuel/.ivy2/cache/com.github.mauricio/postgresql-async_2.12/ivy-0.2.21.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/com/github/mauricio/postgresql-async_2.12/0.2.21/postgresql-async_2.12-0.2.21.pom"/>
 				<caller organisation="core" name="core_2.12" conf="test, compile, provided, test-internal, runtime, optional" rev="0.2.21" rev-constraint-default="0.2.21" rev-constraint-dynamic="0.2.21" callerrev="0.1.0-SNAPSHOT"/>
 				<artifacts>
-					<artifact name="postgresql-async_2.12" type="jar" ext="jar" status="successful" details="" size="244882" time="3324" location="/Users/samuel/.ivy2/cache/com.github.mauricio/postgresql-async_2.12/jars/postgresql-async_2.12-0.2.21.jar">
+					<artifact name="postgresql-async_2.12" type="jar" ext="jar" status="no" details="" size="244882" time="0" location="/Users/samuel/.ivy2/cache/com.github.mauricio/postgresql-async_2.12/jars/postgresql-async_2.12-0.2.21.jar">
 						<origin-location is-local="false" location="https://repo1.maven.org/maven2/com/github/mauricio/postgresql-async_2.12/0.2.21/postgresql-async_2.12-0.2.21.jar"/>
 					</artifact>
 				</artifacts>
