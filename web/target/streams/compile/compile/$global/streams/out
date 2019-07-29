@@ -1,0 +1,7 @@
+[0m[[0m[33mwarn[0m] [0m[0m/home/samuel/opt/domains/Moia/web/src/main/scala/io/moia/web/service/marshalling/JsonHelper.scala:6:41: imported `UrlToShortenRequest' is permanently hidden by definition of object UrlToShortenRequest in package marshalling[0m
+[0m[[0m[33mwarn[0m] [0m[0mimport io.moia.web.service.marshalling.{UrlToShortenRequest, UrlToShortenResponse}[0m
+[0m[[0m[33mwarn[0m] [0m[0m                                        ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/home/samuel/opt/domains/Moia/web/src/main/scala/io/moia/web/service/marshalling/JsonHelper.scala:6:62: imported `UrlToShortenResponse' is permanently hidden by definition of object UrlToShortenResponse in package marshalling[0m
+[0m[[0m[33mwarn[0m] [0m[0mimport io.moia.web.service.marshalling.{UrlToShortenRequest, UrlToShortenResponse}[0m
+[0m[[0m[33mwarn[0m] [0m[0m                                                             ^[0m
+[0m[[0m[33mwarn[0m] [0m[0mtwo warnings found[0m
