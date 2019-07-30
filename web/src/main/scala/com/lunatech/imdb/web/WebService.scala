@@ -1,15 +1,14 @@
 package com.lunatech.imdb.web
 
-import scala.concurrent.ExecutionContext.Implicits.global
 import akka.actor.{ActorSystem, Props}
-import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives._
 import akka.pattern.ask
 import akka.util.Timeout
-import com.lunatech.imdb.service.marshalling.JsonHelper
 import com.lunatech.imdb.service.resolvers.QueryResolver
+import com.lunatech.imdb.service.resolvers.QueryResolver.CheckIfTypeCastedResponse
+import com.lunatech.imdb.web.marshalling.{Coincidences, JsonHelper, TypecastStatus}
 
-import scala.util.{Failure, Success}
+import scala.concurrent.ExecutionContext.Implicits.global
 
 
 trait WebServiceT extends JsonHelper {
@@ -26,16 +25,20 @@ trait WebServiceT extends JsonHelper {
     path("api" / "typecasted") {
       get {
         parameter('name) { name =>
-          //  (queryResolver ? QueryResolver.CheckIfTypeCasted(name))
-          complete("Hello")
-
+           complete((queryResolver ? QueryResolver.CheckIfTypeCastedRequest(name))
+             .mapTo[CheckIfTypeCastedResponse].map(
+             x => TypecastStatus.fromCheckIfTypeCastedResponse(x)
+           ))
         }
       }
     } ~
       path("api" / "coincidence") {
         get {
           (parameter('name1) & parameter('name2)) { (name1, name2) =>
-            complete(StatusCodes.OK, (queryResolver ? QueryResolver.GetCoincidenceRequest(name1, name2)).mapTo[QueryResolver.GetCoincidenceResponse])
+            complete((queryResolver ? QueryResolver.GetCoincidenceRequest(name1, name2))
+              .mapTo[QueryResolver.GetCoincidenceResponse].map(
+              x => Coincidences.fromGetCoincidenceResponse(x)
+            ))
           }
         }
       }

@@ -1,6 +1,6 @@
 .idea
 target/**
 project/**
-service/**
-web/**
-core/**
+service/target/**
+web/target/**
+core/target/**
