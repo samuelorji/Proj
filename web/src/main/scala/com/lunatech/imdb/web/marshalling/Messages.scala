@@ -1,7 +1,8 @@
 package com.lunatech.imdb.web.marshalling
 
 import akka.http.scaladsl.model.StatusCodes
-import com.lunatech.imdb.service.resolvers.QueryResolver.{CheckIfTypeCastedResponse, GetCoincidenceResponse, ShowAndTitle}
+import com.lunatech.imdb.service.resolvers.TypeCastQueryResolver.CheckIfTypeCastedResponse
+import com.lunatech.imdb.service.resolvers.CoincidenceQueryResolver._
 
 object TypecastStatus{
   def fromCheckIfTypeCastedResponse(response : CheckIfTypeCastedResponse) = {
