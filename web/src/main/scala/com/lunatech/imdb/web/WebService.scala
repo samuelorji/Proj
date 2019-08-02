@@ -2,11 +2,13 @@ package com.lunatech.imdb.web
 
 import akka.actor.{ActorSystem, Props}
 import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.marshallers.sprayjson._
 import akka.pattern.ask
 import akka.util.Timeout
-import com.lunatech.imdb.service.resolvers.{CoincidenceQueryResolver, TypeCastQueryResolver}
+import com.lunatech.imdb.service.resolvers.DegreeOfSeparationQueryResolver.GetDegreeOfSeparationResponse
+import com.lunatech.imdb.service.resolvers.{CoincidenceQueryResolver, DegreeOfSeparationQueryResolver, TypeCastQueryResolver}
 import com.lunatech.imdb.service.resolvers.TypeCastQueryResolver.CheckIfTypeCastedResponse
-import com.lunatech.imdb.web.marshalling.{Coincidences, JsonHelper, TypecastStatus}
+import com.lunatech.imdb.web.marshalling.{Coincidences, DegreeOfSeparation, JsonHelper, TypecastStatus}
 
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -22,6 +24,9 @@ trait WebServiceT extends JsonHelper {
 
   private lazy val typeCastQueryResolver     = createTypecastQueryResolver
   def createTypecastQueryResolver            = actorSystem.actorOf(TypeCastQueryResolver.props)
+
+  private lazy val degreeOfSeparationResolver = createDegreeOfSeparationResolver
+  def createDegreeOfSeparationResolver        = actorSystem.actorOf(DegreeOfSeparationQueryResolver.props)
 
   lazy val routes = {
     path("api" / "typecasted") {
@@ -43,6 +48,17 @@ trait WebServiceT extends JsonHelper {
             ))
           }
         }
+      } ~
+    path("api" / "dos"){
+      get{
+        parameter('person){ person =>
+          complete((degreeOfSeparationResolver ? DegreeOfSeparationQueryResolver.GetDegreeOfSeparationRequest(person))
+            .mapTo[GetDegreeOfSeparationResponse].map (
+            x => DegreeOfSeparation.fromGetDegreeOfSeparationResponse(x)
+          ))
+
+        }
       }
+    }
   }
 }

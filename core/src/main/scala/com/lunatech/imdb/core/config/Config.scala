@@ -13,7 +13,7 @@ object ImdbConfig {
   val webHost = config.getString("imdb.interface.web.host")
   val webPort = config.getInt("imdb.interface.web.port")
 
-  // poatgrea
+  // postgres
 
   val postgresDbHost  = config.getString("imdb.db.postgres.host")
   val postgresDbPort  = config.getInt("imdb.db.postgres.port")
@@ -24,6 +24,11 @@ object ImdbConfig {
   val postgresDbPoolMaxObjects   = config.getInt("imdb.db.postgres.pool.max-objects")
   val postgresDbPoolMaxIdle      = config.getInt("imdb.db.postgres.pool.max-idle")
   val postgresDbPoolMaxQueueSize = config.getInt("imdb.db.postgres.pool.max-queue-size")
+
+  //neo4j
+  val neo4jUrl        = config.getString("imdb.db.neo4j.url")
+  val neo4jDbPass     = config.getString("imdb.db.neo4j.pass")
+  val neo4jDbUser     = config.getString("imdb.db.neo4j.user")
 
   //timeouts
 //  val httpRequestsTimeout   = Try(FiniteDuration(config.getInt("imdb.web.http-requests-timeout"),"seconds")).toOption.get

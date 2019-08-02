@@ -19,7 +19,7 @@ lazy val core = (project in file("core")).
       "com.typesafe.akka"      %% "akka-http"            % akkaHttpVersion,
       "com.typesafe.akka"      %% "akka-http-spray-json" % akkaHttpVersion,
       "com.typesafe.akka"      %% "akka-stream"          % akkaVersion,
-      "commons-validator"      % "commons-validator"     % "1.6",
+      "org.neo4j.driver"       % "neo4j-java-driver"     % "1.0.4",
       "com.github.mauricio"    %% "postgresql-async"     % "0.2.21",
       "ch.qos.logback"         %  "logback-classic"      % "1.2.3",
       "ch.qos.logback"         %  "logback-core"         % "1.2.1",

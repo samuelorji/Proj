@@ -3,6 +3,7 @@ package com.lunatech.imdb.web.marshalling
 import akka.http.scaladsl.model.StatusCodes
 import com.lunatech.imdb.service.resolvers.TypeCastQueryResolver.CheckIfTypeCastedResponse
 import com.lunatech.imdb.service.resolvers.CoincidenceQueryResolver._
+import com.lunatech.imdb.service.resolvers.DegreeOfSeparationQueryResolver.GetDegreeOfSeparationResponse
 
 object TypecastStatus{
   def fromCheckIfTypeCastedResponse(response : CheckIfTypeCastedResponse) = {
@@ -29,5 +30,16 @@ object Coincidences{
   }
 }
 private[web] case class Coincidences(coincidences: List[ShowAndTitle])
+
+
+object DegreeOfSeparation{
+  def fromGetDegreeOfSeparationResponse(response : GetDegreeOfSeparationResponse) = {
+    response.error match {
+      case Some(_) => StatusCodes.InternalServerError -> None
+      case None    => StatusCodes.OK                  -> Some(DegreeOfSeparation(response.num))
+    }
+  }
+}
+private[web] case class DegreeOfSeparation(degree : Option[Int])
 
 

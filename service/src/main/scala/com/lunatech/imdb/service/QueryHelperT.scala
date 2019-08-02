@@ -1,22 +1,42 @@
 package com.lunatech.imdb.service
 
 import akka.actor.ActorRef
-
-import scala.concurrent.ExecutionContext.Implicits.global
-import akka.actor.ActorLogging
 import akka.event.LoggingAdapter
 import com.github.mauricio.async.db.RowData
+import com.lunatech.imdb.core.db.neo4j.mapper.Neo4jMapper
 import com.lunatech.imdb.core.db.postgres.mapper.ImdbMapper
-import com.lunatech.imdb.service.resolvers.TypeCastQueryResolver.{CheckIfTypeCastedRequest, CheckIfTypeCastedResponse}
 import com.lunatech.imdb.service.resolvers.CoincidenceQueryResolver._
+import com.lunatech.imdb.service.resolvers.DegreeOfSeparationQueryResolver.{GetDegreeOfSeparationRequest, GetDegreeOfSeparationResponse}
+import com.lunatech.imdb.service.resolvers.TypeCastQueryResolver.{CheckIfTypeCastedRequest, CheckIfTypeCastedResponse}
+import org.neo4j.driver.v1.exceptions.NoSuchRecordException
 
 import scala.collection.mutable.ArrayBuffer
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.util.{Failure, Success}
 
 
 object QueryHelpers {
 
-  trait CoincodenceQueryHelperT {
+  trait DegreeOfSeparationHelperT{
+    def logger: LoggingAdapter
+    def getDegreeOfSeparation(req : GetDegreeOfSeparationRequest , sender : ActorRef) = {
+      Neo4jMapper.getDegreeOfSeparation(req.person).onComplete{
+        case Success(deg) => sender ! GetDegreeOfSeparationResponse(Some(deg.asInt()),None)
+        case Failure(ex)  =>
+          ex match {
+            case _ : NoSuchRecordException => //In case No record is found
+              sender ! GetDegreeOfSeparationResponse(Some(-1),None)
+            case _  =>
+              logger.error(s"Error received while processing [$req], error : [${ex.getMessage}]")
+              sender ! GetDegreeOfSeparationResponse(None,Some(ex.getMessage))
+          }
+
+      }
+    }
+
+  }
+
+  trait CoincidenceQueryHelperT {
     def logger: LoggingAdapter
 
     private def rowToShowType(row: RowData) = ShowAndTitle(
