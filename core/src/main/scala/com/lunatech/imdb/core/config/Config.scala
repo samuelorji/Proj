@@ -1,13 +1,8 @@
 package com.lunatech.imdb.core.config
 
-import scala.concurrent.duration._
-import scala.util.Try
+import com.lunatech.imdb.core.util.ConfigT
 
-import com.typesafe.config.ConfigFactory
-
-object ImdbConfig {
-
-  val config = ConfigFactory.load()
+object ImdbConfig  extends ConfigT{
 
   // Web Interface
   val webHost = config.getString("imdb.interface.web.host")

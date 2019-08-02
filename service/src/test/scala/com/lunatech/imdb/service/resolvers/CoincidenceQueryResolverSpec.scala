@@ -1,25 +1,26 @@
 package com.lunatech.imdb.service.resolvers
 
 import akka.actor.{ActorRef, Props}
+import com.github.mauricio.async.db.QueryResult
 import com.lunatech.imdb.service.TestServiceT
 import com.lunatech.imdb.service.resolvers.CoincidenceQueryResolver.{GetCoincidenceRequest, GetCoincidenceResponse}
+
+import scala.concurrent.Future
 
 class CoincidenceQueryResolverSpec extends TestServiceT{
   "The Coincidence Query Resolver " must {
     "Properly parse a Failed  GetCoinidenceQueryRequest with error  " in {
 
       val expectedErrorMessage      = "Failure occured while fetching data"
-      val coincidenceQueryResolver = system.actorOf(Props(new CoincidenceQueryResolver(){
+      val coincidenceQueryResolver  = system.actorOf(Props(new CoincidenceQueryResolver(){
         override def getCoincidence(req: CoincidenceQueryResolver.GetCoincidenceRequest, sender: ActorRef): Unit = {
           //Simulating a Failed CoincidenceResponse
-
           sender ! GetCoincidenceResponse(List(),Some(expectedErrorMessage))
         }
 
       }))
 
-
-      val request = GetCoincidenceRequest("Jennifer","Aniston")
+      val request = GetCoincidenceRequest("Jennifer","AnistonQ")
 
       coincidenceQueryResolver ! request
 
@@ -27,16 +28,43 @@ class CoincidenceQueryResolverSpec extends TestServiceT{
       response.error should be(Some(expectedErrorMessage))
     }
 
+    "Respond with an error when the database query Fails  " in {
+
+      val expectedErrorMessage      = "Failure occured while fetching data"
+      val coincidenceQueryResolver  = system.actorOf(Props(new CoincidenceQueryResolver(){
+        //simulate a failed database query
+        override def fetchFromDb(query: => Future[QueryResult]): Future[QueryResult] = Future.failed(new Exception(expectedErrorMessage))
+      }))
+
+      val request = GetCoincidenceRequest("Jennifer","AnistonQ")
+      coincidenceQueryResolver ! request
+
+      val response = expectMsgType[GetCoincidenceResponse]
+      response.error should be(Some(expectedErrorMessage))
+    }
+
+    "Respond without an error when the database query is successful  " in {
+
+      val coincidenceQueryResolver  = system.actorOf(Props(new CoincidenceQueryResolver(){
+        //simulate a successful database query
+        override def fetchFromDb(query: => Future[QueryResult]): Future[QueryResult] = Future.successful(new QueryResult(1L,""))
+      }))
+
+      val request = GetCoincidenceRequest("Jennifer","Aniston")
+      coincidenceQueryResolver ! request
+
+      val response = expectMsgType[GetCoincidenceResponse]
+      response.error should be(None)
+    }
+
     "Properly parse a Successful GetCoinidenceQueryRequest without error " in {
 
       val coincidenceQueryResolver = system.actorOf(Props(new CoincidenceQueryResolver(){
         override def getCoincidence(req: CoincidenceQueryResolver.GetCoincidenceRequest, sender: ActorRef): Unit = {
-          //Simulating a Failed CoincidenceResponse
-
+          //Simulating a Successful CoincidenceResponse
           sender ! GetCoincidenceResponse(List(),None)
         }
       }))
-
 
       val request = GetCoincidenceRequest("Jennifer","Aniston")
 

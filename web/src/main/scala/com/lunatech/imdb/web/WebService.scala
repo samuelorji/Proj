@@ -32,17 +32,17 @@ trait WebServiceT extends JsonHelper {
     path("api" / "typecasted") {
       get {
         parameter('name) { name =>
+          println(s"Parsed name is $name")
            complete((typeCastQueryResolver ? TypeCastQueryResolver.CheckIfTypeCastedRequest(name))
              .mapTo[CheckIfTypeCastedResponse].map(
              x => TypecastStatus.fromCheckIfTypeCastedResponse(x)
            ))
         }
-      }
-    } ~
+    } }~
       path("api" / "coincidence") {
         get {
-          (parameter('name1) & parameter('name2)) { (name1, name2) =>
-            complete((coincidenceQueryResolver ? CoincidenceQueryResolver.GetCoincidenceRequest(name1, name2))
+          (parameter('first) & parameter('second)) { (first, second) =>
+            complete((coincidenceQueryResolver ? CoincidenceQueryResolver.GetCoincidenceRequest(first, second))
               .mapTo[CoincidenceQueryResolver.GetCoincidenceResponse].map(
               x => Coincidences.fromGetCoincidenceResponse(x)
             ))
@@ -51,8 +51,8 @@ trait WebServiceT extends JsonHelper {
       } ~
     path("api" / "dos"){
       get{
-        parameter('person){ person =>
-          complete((degreeOfSeparationResolver ? DegreeOfSeparationQueryResolver.GetDegreeOfSeparationRequest(person))
+        parameter('name){ name =>
+          complete((degreeOfSeparationResolver ? DegreeOfSeparationQueryResolver.GetDegreeOfSeparationRequest(name))
             .mapTo[GetDegreeOfSeparationResponse].map (
             x => DegreeOfSeparation.fromGetDegreeOfSeparationResponse(x)
           ))

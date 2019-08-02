@@ -30,17 +30,5 @@ object Server extends App {
     .flatMap(_.unbind())
     .onComplete(_ => system.terminate()) // and shutdown when done
 
-//  val res = Neo4jMapperDb.session.run("MATCH p=shortestPath( \n(bacon:Actor {name:\"Bacon, Kevin (I)\"})-[*]-(blair:Actor {name:\"Aniston, John\"}))\n " +
-//    "RETURN length (p) as path")
-//
-//  println(res.single().get("path"))
-
-//  Neo4jMapper.getDegreeOfSeparation("Odunlade, Adekola").onComplete{
-//    case Success(res) => println(s"result is " + res)
-//    case Failure(exception) => println(s"exception is " + exception)
-//  }
-
-
-
 
 }

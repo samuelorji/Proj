@@ -19,6 +19,7 @@ private[resolvers] class TypeCastQueryResolver extends Actor
 
   override def receive: Receive = {
     case req: CheckIfTypeCastedRequest =>
+      log.info(s"Processing request: [$req]")
       val currentSender = sender()
       getTypeCastStatus(req, currentSender)
 

@@ -1,15 +1,16 @@
-package com.lunatech.imdb.service
+package com.lunatech.imdb.web
 
 import akka.actor.ActorSystem
+import akka.http.scaladsl.testkit.ScalatestRouteTest
 import akka.testkit.{ImplicitSender, TestKit}
 import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
 
-private[service] abstract class TestServiceT extends TestKit(ActorSystem("TestSystem"))
-  with ImplicitSender
-  with Matchers
+private[web] abstract class TestServiceT
+  extends Matchers
   with WordSpecLike
+  with ScalatestRouteTest
   with BeforeAndAfterAll
-  {
+{
 
   override def beforeAll {
     Thread.sleep(2000)
@@ -20,4 +21,3 @@ private[service] abstract class TestServiceT extends TestKit(ActorSystem("TestSy
     TestKit.shutdownActorSystem(system)
   }
 }
-

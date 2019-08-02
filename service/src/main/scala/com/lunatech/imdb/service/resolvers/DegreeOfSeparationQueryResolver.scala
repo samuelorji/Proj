@@ -21,6 +21,7 @@ private[resolvers] class DegreeOfSeparationQueryResolver extends Actor
   override def receive: Receive = {
     case req : GetDegreeOfSeparationRequest =>
       val currentSender = sender()
+      log.info(s"Processing request: [$req]")
       getDegreeOfSeparation(req,currentSender)
 
 
