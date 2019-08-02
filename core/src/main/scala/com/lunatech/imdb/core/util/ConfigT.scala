@@ -1,4 +1,5 @@
-package com.lunatech.imdb.core.util
+package com.lunatech.imdb.core
+package util
 
 import com.typesafe.config.ConfigFactory
 

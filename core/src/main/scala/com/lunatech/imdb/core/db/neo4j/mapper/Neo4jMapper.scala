@@ -1,8 +1,11 @@
-package com.lunatech.imdb.core.db.neo4j.mapper
+package com.lunatech.imdb.core
+package db.neo4j.mapper
 
-import com.lunatech.imdb.core.db.neo4j.Neo4jDb
 import scala.concurrent.ExecutionContext.Implicits.global
 
+import db.neo4j.Neo4jDb
+
+/**Set Up for the Neo4j Driver */
 import scala.concurrent.Future
 
 object Neo4jMapper {

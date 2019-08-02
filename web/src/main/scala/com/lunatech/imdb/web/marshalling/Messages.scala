@@ -1,9 +1,11 @@
-package com.lunatech.imdb.web.marshalling
+package com.lunatech.imdb
+package web.marshalling
 
 import akka.http.scaladsl.model.StatusCodes
-import com.lunatech.imdb.service.resolvers.TypeCastQueryResolver.CheckIfTypeCastedResponse
-import com.lunatech.imdb.service.resolvers.CoincidenceQueryResolver._
-import com.lunatech.imdb.service.resolvers.DegreeOfSeparationQueryResolver.GetDegreeOfSeparationResponse
+
+import service.resolvers.TypeCastQueryResolver.CheckIfTypeCastedResponse
+import service.resolvers.CoincidenceQueryResolver._
+import service.resolvers.DegreeOfSeparationQueryResolver.GetDegreeOfSeparationResponse
 
 object TypecastStatus{
   def fromCheckIfTypeCastedResponse(response : CheckIfTypeCastedResponse) = {

@@ -1,8 +1,10 @@
-package com.lunatech.imdb.service.resolvers
+package com.lunatech.imdb.service
+package resolvers
 
-import akka.actor.{ActorRef, Props}
-import com.lunatech.imdb.service.TestServiceT
-import com.lunatech.imdb.service.resolvers.DegreeOfSeparationQueryResolver._
+import akka.actor.{ ActorRef, Props }
+
+import DegreeOfSeparationQueryResolver._
+
 import org.neo4j.driver.v1.Value
 
 import scala.concurrent.Future

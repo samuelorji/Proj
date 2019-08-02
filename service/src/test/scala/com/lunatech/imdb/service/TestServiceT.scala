@@ -1,8 +1,8 @@
 package com.lunatech.imdb.service
 
 import akka.actor.ActorSystem
-import akka.testkit.{ImplicitSender, TestKit}
-import org.scalatest.{BeforeAndAfterAll, Matchers, WordSpecLike}
+import akka.testkit.{ ImplicitSender, TestKit }
+import org.scalatest.{ BeforeAndAfterAll, Matchers, WordSpecLike }
 
 private[service] abstract class TestServiceT extends TestKit(ActorSystem("TestSystem"))
   with ImplicitSender

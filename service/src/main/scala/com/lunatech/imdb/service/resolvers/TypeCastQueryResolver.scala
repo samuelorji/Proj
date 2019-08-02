@@ -1,15 +1,23 @@
-package com.lunatech.imdb.service.resolvers
+package com.lunatech.imdb.service
+package resolvers
 
-import akka.actor.{Actor, ActorLogging, Props}
+import akka.actor.{ Actor, ActorLogging, Props }
 import akka.event.LoggingAdapter
-import com.lunatech.imdb.service.QueryHelpers.TypeCastQueryHelperT
 
-object TypeCastQueryResolver{
-  case class CheckIfTypeCastedRequest(person : String)
-  case class CheckIfTypeCastedResponse(status : Boolean,error : Option[String])
+import QueryHelpers.TypeCastQueryHelperT
+
+/**
+  * Actor Responsible for TypeCasted Queries
+  * */
+object TypeCastQueryResolver {
+
+  case class CheckIfTypeCastedRequest(person: String)
+
+  case class CheckIfTypeCastedResponse(status: Boolean, error: Option[String])
 
   def props = Props[TypeCastQueryResolver]
-  }
+}
+
 
 private[resolvers] class TypeCastQueryResolver extends Actor
   with ActorLogging

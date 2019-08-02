@@ -1,7 +1,13 @@
-package com.lunatech.imdb.core.config
+package com.lunatech.imdb.core
+package config
 
-import com.lunatech.imdb.core.util.ConfigT
+import scala.concurrent.duration.FiniteDuration
+import scala.util.Try
 
+import util.ConfigT
+
+/**
+  * Contains Configurations shared across the whole project*/
 object ImdbConfig  extends ConfigT{
 
   // Web Interface
@@ -26,7 +32,7 @@ object ImdbConfig  extends ConfigT{
   val neo4jDbUser     = config.getString("imdb.db.neo4j.user")
 
   //timeouts
-//  val httpRequestsTimeout   = Try(FiniteDuration(config.getInt("imdb.web.http-requests-timeout"),"seconds")).toOption.get
+  val httpRequestsTimeout   = Try(FiniteDuration(config.getInt("imdb.web.http-requests-timeout"),"seconds")).toOption.get
 
-  //val shortenedUrlPrefix = config.getString("moia.api.url-prefix")
+
 }

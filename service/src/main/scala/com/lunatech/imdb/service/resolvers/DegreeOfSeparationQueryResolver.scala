@@ -1,9 +1,14 @@
-package com.lunatech.imdb.service.resolvers
+package com.lunatech.imdb.service
+package resolvers
 
-import akka.actor.{Actor, ActorLogging, Props}
+import akka.actor.{ Actor, ActorLogging, Props }
 import akka.event.LoggingAdapter
-import com.lunatech.imdb.service.QueryHelpers.DegreeOfSeparationHelperT
 
+import QueryHelpers.DegreeOfSeparationHelperT
+
+/**
+  * Acotor Responsible for DegreeOfSeparation Queries
+  */
 object DegreeOfSeparationQueryResolver{
   case class GetDegreeOfSeparationRequest(person : String)
   case class GetDegreeOfSeparationResponse(num : Option[Int] , error : Option[String])

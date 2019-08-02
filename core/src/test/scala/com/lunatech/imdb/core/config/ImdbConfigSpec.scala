@@ -1,6 +1,5 @@
-package com.lunatech.imdb.core.config
-
-import com.lunatech.imdb.core.TestServiceT
+package com.lunatech.imdb.core
+package config
 
 class ImdbConfigSpec extends TestServiceT {
 

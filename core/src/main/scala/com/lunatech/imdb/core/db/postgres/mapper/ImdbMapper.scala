@@ -1,7 +1,9 @@
-package com.lunatech.imdb.core.db.postgres.mapper
+package com.lunatech.imdb.core
+package db.postgres.mapper
+
+import db.postgres.ImdbPostgresDb
 
 import com.github.mauricio.async.db.QueryResult
-import com.lunatech.imdb.core.db.postgres.ImdbPostgresDb
 
 import scala.concurrent.Future
 

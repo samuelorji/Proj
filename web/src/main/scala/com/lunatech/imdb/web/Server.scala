@@ -1,16 +1,15 @@
-package com.lunatech.imdb.web
+package com.lunatech.imdb
+package web
+
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.io.StdIn
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
 import akka.stream.ActorMaterializer
 import akka.util.Timeout
-import com.lunatech.imdb.core.config.ImdbConfig
-import com.lunatech.imdb.core.db.neo4j.mapper.Neo4jMapper
 
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.duration.FiniteDuration
-import scala.io.StdIn
-import scala.util.{Failure, Success}
+import core.config.ImdbConfig
 
 object Server extends App {
 
@@ -21,14 +20,14 @@ object Server extends App {
   val bdgFut = Http().bindAndHandle(
     new WebServiceT {
       override implicit val actorSystem: ActorSystem = system
-      override implicit val timeout: Timeout = Timeout(FiniteDuration(10,"seconds"))
+      override implicit val timeout: Timeout = ImdbConfig.httpRequestsTimeout
     }.routes,
     ImdbConfig.webHost, ImdbConfig.webPort)
 
   StdIn.readLine()
   bdgFut
     .flatMap(_.unbind())
-    .onComplete(_ => system.terminate()) // and shutdown when done
+    .onComplete(_ => system.terminate())
 
 
 }

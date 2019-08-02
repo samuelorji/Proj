@@ -1,11 +1,13 @@
-package com.lunatech.imdb.service.resolvers
+package com.lunatech.imdb.service
+package resolvers
 
-import akka.actor.{ActorRef, Props}
-import com.github.mauricio.async.db.QueryResult
-import com.lunatech.imdb.service.TestServiceT
-import com.lunatech.imdb.service.resolvers.CoincidenceQueryResolver.{GetCoincidenceRequest, GetCoincidenceResponse}
+import akka.actor.{ ActorRef, Props }
 
 import scala.concurrent.Future
+
+import CoincidenceQueryResolver._
+
+import com.github.mauricio.async.db.QueryResult
 
 class CoincidenceQueryResolverSpec extends TestServiceT{
   "The Coincidence Query Resolver " must {

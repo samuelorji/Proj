@@ -1,23 +1,21 @@
-package com.lunatech.imdb.web
+package com.lunatech.imdb
+package web
 
 import scala.concurrent.duration._
-import akka.actor.{ActorRef, ActorSystem}
+
+import akka.actor.ActorSystem
 import akka.http.scaladsl.model.{HttpMethods, HttpRequest, StatusCodes}
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.testkit.RouteTestTimeout
-import akka.testkit.TestProbe
 import akka.util.Timeout
-import com.lunatech.imdb.service.resolvers.TypeCastQueryResolver
-import com.lunatech.imdb.web.marshalling.TypecastStatus
 
-import scala.concurrent.duration.FiniteDuration
+import core.config.ImdbConfig
 
 class WebServiceSpec extends TestServiceT
 with WebServiceT {
 
 
-  override implicit val timeout: Timeout = Timeout(10 seconds)
-
+  override implicit val timeout: Timeout         = ImdbConfig.httpRequestsTimeout
   override implicit val actorSystem: ActorSystem = system
 
 

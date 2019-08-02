@@ -1,11 +1,13 @@
-package com.lunatech.imdb.service.resolvers
-
-import akka.actor.{ActorRef, Props}
-import com.github.mauricio.async.db.QueryResult
-import com.lunatech.imdb.service.TestServiceT
-import com.lunatech.imdb.service.resolvers.TypeCastQueryResolver.{CheckIfTypeCastedRequest, CheckIfTypeCastedResponse}
+package com.lunatech.imdb.service
+package resolvers
 
 import scala.concurrent.Future
+
+import akka.actor.{ ActorRef, Props }
+
+import com.github.mauricio.async.db.QueryResult
+
+import TypeCastQueryResolver._
 
 class TypeCastQueryResolverSpec extends TestServiceT {
 
@@ -75,8 +77,6 @@ class TypeCastQueryResolverSpec extends TestServiceT {
       val response = expectMsgType[CheckIfTypeCastedResponse]
       response.error should be(None)
     }
-
-
   }
 
 }

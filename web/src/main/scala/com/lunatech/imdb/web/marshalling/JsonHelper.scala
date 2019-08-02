@@ -1,7 +1,10 @@
-package com.lunatech.imdb.web.marshalling
+package com.lunatech.imdb
+package web.marshalling
 
 import akka.http.scaladsl.marshallers.sprayjson._
-import com.lunatech.imdb.service.resolvers.CoincidenceQueryResolver.ShowAndTitle
+
+import service.resolvers.CoincidenceQueryResolver.ShowAndTitle
+
 import spray.json._
 
 trait JsonHelper extends SprayJsonSupport with DefaultJsonProtocol {

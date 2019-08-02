@@ -1,9 +1,14 @@
-package com.lunatech.imdb.service.resolvers
+package com.lunatech.imdb.service
+package resolvers
 
-import akka.actor.{Actor, ActorLogging, Props}
+import akka.actor.{ Actor, ActorLogging, Props }
 import akka.event.LoggingAdapter
-import com.lunatech.imdb.service.QueryHelpers.CoincidenceQueryHelperT
 
+import QueryHelpers.CoincidenceQueryHelperT
+
+/**
+  * Actor Responsible for Coinicidence Queries
+  * */
 object CoincidenceQueryResolver {
   case class GetCoincidenceRequest(first : String, second : String)
   case class ShowAndTitle(title : Option[String], kind_of_show : Option[String])
@@ -12,7 +17,9 @@ object CoincidenceQueryResolver {
   def props = Props[CoincidenceQueryResolver]
 }
 
-private[resolvers]class CoincidenceQueryResolver extends Actor with ActorLogging with CoincidenceQueryHelperT {
+private[resolvers]class CoincidenceQueryResolver extends Actor
+  with ActorLogging
+  with CoincidenceQueryHelperT {
 
   import CoincidenceQueryResolver._
 

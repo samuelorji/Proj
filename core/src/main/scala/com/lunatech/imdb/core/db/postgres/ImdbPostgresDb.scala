@@ -1,10 +1,13 @@
-package com.lunatech.imdb.core.db.postgres
+package com.lunatech.imdb.core
+package db.postgres
+
+import config.ImdbConfig
 
 import com.github.mauricio.async.db.Configuration
-import com.github.mauricio.async.db.pool.{ConnectionPool, PoolConfiguration}
+import com.github.mauricio.async.db.pool.{ ConnectionPool, PoolConfiguration }
 import com.github.mauricio.async.db.postgresql.pool.PostgreSQLConnectionFactory
-import com.lunatech.imdb.core.config.ImdbConfig
 
+/**Postgres Driver Setup*/
 private[postgres] object ImdbPostgresDb {
   private val configuration = new Configuration(
     username = ImdbConfig.postgresDbUser,

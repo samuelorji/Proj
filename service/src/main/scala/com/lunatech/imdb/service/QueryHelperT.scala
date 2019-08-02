@@ -2,19 +2,25 @@ package com.lunatech.imdb.service
 
 import akka.actor.ActorRef
 import akka.event.LoggingAdapter
-import com.github.mauricio.async.db.{QueryResult, RowData}
-import com.lunatech.imdb.core.db.neo4j.mapper.Neo4jMapper
-import com.lunatech.imdb.core.db.postgres.mapper.ImdbMapper
-import com.lunatech.imdb.service.resolvers.CoincidenceQueryResolver._
-import com.lunatech.imdb.service.resolvers.DegreeOfSeparationQueryResolver.{GetDegreeOfSeparationRequest, GetDegreeOfSeparationResponse}
-import com.lunatech.imdb.service.resolvers.TypeCastQueryResolver.{CheckIfTypeCastedRequest, CheckIfTypeCastedResponse}
-import org.neo4j.driver.v1.Value
-import org.neo4j.driver.v1.exceptions.NoSuchRecordException
 
 import scala.collection.mutable.ArrayBuffer
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.util.{Failure, Success}
+import scala.util.{ Failure, Success }
+
+import com.lunatech.imdb._
+
+import core.db.neo4j.mapper.Neo4jMapper
+import core.db.postgres.mapper.ImdbMapper
+
+import service.resolvers.CoincidenceQueryResolver._
+import service.resolvers.DegreeOfSeparationQueryResolver._
+import service.resolvers.TypeCastQueryResolver._
+
+import com.github.mauricio.async.db.{ QueryResult, RowData }
+
+import org.neo4j.driver.v1.Value
+import org.neo4j.driver.v1.exceptions.NoSuchRecordException
 
 
 object QueryHelpers {
