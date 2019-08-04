@@ -15,9 +15,6 @@ import TypeCastQueryResolver.CheckIfTypeCastedResponse
 
 import web.marshalling._
 
-
-
-
 trait WebServiceT extends JsonHelper {
 
   implicit val timeout: Timeout
@@ -33,7 +30,7 @@ trait WebServiceT extends JsonHelper {
   private lazy val degreeOfSeparationResolver = createDegreeOfSeparationResolver
   def createDegreeOfSeparationResolver        = actorSystem.actorOf(DegreeOfSeparationQueryResolver.props)
 
-  lazy val routes = {
+  val routes = {
     pathPrefix("api") {
       path("typecasted") {
         get {
